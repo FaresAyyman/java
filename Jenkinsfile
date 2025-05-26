@@ -14,15 +14,11 @@ node('Agent1') {
         }
     }
 
-    stage("Build JAR with Maven") {
-        sh 'mvn clean package'
-    }
-
-    stage("Build Docker Image") {
-        docker.buildJavaImage()
-    }
-
-    stage("Push Docker Image") {
-        docker.pushJavaImage()
+    stage("Build JAR + Docker Image") {
+        dir('java') {
+            sh 'mvn clean package'
+            docker.buildJavaImage()
+            docker.pushJavaImage()
+        }
     }
 }
