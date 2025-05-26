@@ -15,11 +15,15 @@ node('Agent1') {
     }
 
     stage("Build JAR") {
-        sh 'mvn clean package -Dmaven.test.skip=true'
+        dir('java') {
+            sh 'mvn clean package install -Dmaven.test.skip=true'
+        }
     }
 
     stage("Build & Push Docker Image") {
-        docker.buildJavaImage()
-        docker.pushJavaImage()
+        dir('java') {
+            docker.buildJavaImage()
+            docker.pushJavaImage()
+        }
     }
 }
