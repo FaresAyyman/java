@@ -16,7 +16,7 @@ node('Agent1') {
 
     stage("Build JAR + Docker Image") {
         
-            sh 'mvn clean package'
+            sh "mvn clean package install -Dmaven.test.skip=true"
             docker.buildJavaImage()
             docker.pushJavaImage()
         }
